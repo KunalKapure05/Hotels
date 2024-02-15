@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 // 1)Define the MongoDB connection URL
-// const mongoUrl_Local = process.env.MONGODB_URL_LOCAL;
+// const mongoUrl = process.env.MONGODB_URL_LOCAL;
 const mongoUrl = process.env.MONGODB_URL;
 
 
