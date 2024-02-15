@@ -4,6 +4,8 @@ const db = require('./db');
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 const People = require('./models/People');
+require('dotenv').config();
+const PORT = process.env.PORT || 8100;
 
 app.get('/',(req,res)=>{
     res.send("welcome to our hotel")
@@ -25,6 +27,6 @@ app.get('/',(req,res)=>{
 
 
 
-app.listen(8100,()=>{
+app.listen(PORT,()=>{
     console.log("Listening to port no : 8100");
 })

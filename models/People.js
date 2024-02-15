@@ -19,7 +19,7 @@ const peopleSchema = new mongoose.Schema({
     },
 
     mobile:{
-        type:String,
+        type:Number,
         required:true
     },
     
