@@ -4,7 +4,7 @@ const People = require('./../models/People')
 
 router.post('/',async(req,res)=>{
     try {
-        const data = req.body // Assuming the person's data is in request body
+        const data = req.body // Assuming the person's data is in request body with the help pf body-parser
 
     //Create a new person document using moongoose model
     const newPeople = new People(data);  
@@ -53,7 +53,7 @@ router.post('/',async(req,res)=>{
         
     })
 
-    router.put('/:id',async (req,res)=>{
+    router.put('/:id',async (req,res)=>{  /// this is Update method
         try {
             const personId = req.params.id // extract the id from url parameter
             const updatedPersonData = req.body// updated data will be stored in req.body by body-parser
