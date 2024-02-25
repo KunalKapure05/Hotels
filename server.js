@@ -3,7 +3,7 @@ const app = express();
 const db = require('./db');
 
 
-const passport = require('./auth')
+const passport = require('./middlewares/auth')
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 // const People = require('./models/People'); ---> It is kept in auth.js file 
@@ -34,7 +34,7 @@ app.get('/', (req,res)=>{
 
   //Import the router files
     const personRoutes = require('./Routes/personRoutes');
-    app.use('/person',localAuthMiddleware,personRoutes)
+    app.use('/person',personRoutes)
 
 
     const MenuItemRoutes = require('./Routes/menuItemRoutes');

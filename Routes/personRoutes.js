@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const People = require('./../models/People')
+const {jwtAuthMiddleware,generateToken} = require('./../middlewares/jwtAuth')
 
-router.post('/',async(req,res)=>{
+//Post route to add person
+ router.post('/signup',async(req,res)=>{
     try {
         const data = req.body // Assuming the person's data is in request body with the help pf body-parser
 
@@ -11,9 +13,25 @@ router.post('/',async(req,res)=>{
   
     //Save the newPerson into databse
     const response = await newPeople.save();
-    console.log("data saved");  
-    res.status(200).json(response);
+    console.log("data saved"); 
+
+    const payload  = {
+        id : response.id,
+        username :response.username
+    }
+
+    console.log(JSON.stringify(payload))
+    const token = generateToken(payload);
+    console.log("token is : " , token)
+
+
+    
+    
+
+    res.status(200).json({"response":response,"token":token});
     } 
+
+
 
     catch (err) {
         console.log(err);
@@ -75,5 +93,26 @@ router.post('/',async(req,res)=>{
             
         }
     })
+
+    router.delete('/:id', async (req, res) => {
+        try {
+        const personId = req.params.id; // Extract the person's ID from the URL parameter
+        
+        // Assuming you have a Person model
+        const deletedPerson = await People.findByIdAndDelete(personId);
+        if (!deletedPerson) {
+        return res.status(404).json({ error: 'Person not found' });
+        }
+        // Send a success message as a JSON response
+        console.log("Person has been deleted suucessfully")
+        res.json({ message: 'Person deleted successfully' });
+        } 
+        
+        catch (error) {
+        console.error('Error deleting person:', error);
+        res.status(500).json({ error: 'Internal server error' });
+        }
+        });
+
      
     module.exports = router;
