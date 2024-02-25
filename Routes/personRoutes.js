@@ -4,6 +4,7 @@ const People = require('./../models/People')
 const {jwtAuthMiddleware,generateToken} = require('./../middlewares/jwtAuth')
 
 //Post route to add person
+//signup page
  router.post('/signup',async(req,res)=>{
     try {
         const data = req.body // Assuming the person's data is in request body with the help pf body-parser
@@ -39,6 +40,48 @@ const {jwtAuthMiddleware,generateToken} = require('./../middlewares/jwtAuth')
     
     }
     })
+
+     //Login page
+    router.post('/login',async(req,res)=>{
+      try {
+        //Extract the username and password from request body
+        const {username,password} = req.body;
+
+        //Find the user by username
+        const user = await People.findOne({username:username});
+
+        //If the user doesnt exist or password is wrong,return error
+        if(!user || !(await user.comparePassword(password))){
+            return res.status(401).json({error:"Invalid User or password"})
+
+        }
+
+        //generate token
+        const payload = {
+            id:user.id,
+            username:user.username
+        }
+
+        const token = generateToken(payload);
+
+        //return token as a response
+            res.status(201).json({token})
+        
+
+
+
+        
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({error:"Internal Server Error"})
+        
+      }
+
+    })
+
+
+
+
 
     router.get('/', async (req,res)=>{
         try {
