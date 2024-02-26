@@ -80,10 +80,33 @@ const {jwtAuthMiddleware,generateToken} = require('./../middlewares/jwtAuth')
     })
 
 
+    //Profile Route
+    router.get('/profile',jwtAuthMiddleware,async (req,res)=>{
+        try {
+            const userData = req.user;
+        console.log("UserData is : ",userData);
+
+        const userId = userData.id;
+        const user = await People.findById(userId);
+
+        res.status(200).json({user});
+            
+        } 
+        
+        catch (error) {
+            console.error(error);
+            res.status(500).json({error:"Internal Server Error"})
+
+            
+        }
+
+    })
 
 
 
-    router.get('/', async (req,res)=>{
+
+
+    router.get('/', jwtAuthMiddleware,async (req,res)=>{
         try {
             const response = await People.find();
             console.log("data fetched");
